@@ -1,69 +1,330 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Token — UgPhone</title>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #1b2735, #090a0f);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      gap: 20px;
-    }
-    #tokenBox {
-      background: rgba(255,255,255,0.1);
-      padding: 20px 30px;
-      border-radius: 12px;
-      font-size: 18px;
-      letter-spacing: 1px;
-      user-select: all;
-    }
-    button {
-      background: linear-gradient(135deg, #4CAF50, #66BB6A);
-      border: none;
-      color: #fff;
-      padding: 10px 18px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Size Checker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-panel {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .error {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .success {
+            color: #155724;
+            background: #d4edda;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .info-item {
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background: #28a745;
+        }
+        
+        .status-offline {
+            background: #dc3545;
+        }
+    </style>
 </head>
 <body>
-  <h1>🎉 Token của bạn đã được tạo!</h1>
-  <div id="tokenBox">Đang tạo token...</div>
-  <button id="copyBtn">📋 Sao chép token</button>
+    <div class="container">
+        <h1>🔍 Roblox Size Checker</h1>
+        
+        <div id="loginSection">
+            <div class="form-group">
+                <label for="tokenInput">🔑 Token Discord:</label>
+                <input type="text" id="tokenInput" placeholder="Nhập token từ Discord bot...">
+            </div>
+            <button onclick="login()" id="loginBtn">Đăng Nhập</button>
+            <div class="info-panel">
+                <h3>📝 Hướng dẫn:</h3>
+                <p>1. Sử dụng script Roblox để gửi thông tin</p>
+                <p>2. Dùng lệnh <code>/kiem_tra_ten</code> trên Discord</p>
+                <p>3. Nhấn "Xác Nhận Token" để lấy token</p>
+                <p>4. Nhập token vào đây để theo dõi Size</p>
+            </div>
+        </div>
+        
+        <div id="infoSection" class="hidden">
+            <div class="info-panel">
+                <h3>📊 Thông Tin Roblox</h3>
+                <div class="info-item">
+                    <strong>👤 Tên Roblox:</strong> <span id="robloxName">N/A</span>
+                </div>
+                <div class="info-item">
+                    <strong>📏 Size:</strong> <span id="sizeValue">N/A</span>
+                </div>
+                <div class="info-item">
+                    <strong>🕒 Cập nhật lúc:</strong> <span id="updateTime">N/A</span>
+                </div>
+                <div class="info-item">
+                    <strong>🔗 Trạng thái:</strong> 
+                    <span id="connectionStatus">
+                        <span class="status-indicator status-online"></span>
+                        <span>Đang kết nối...</span>
+                    </span>
+                </div>
+            </div>
+            <button onclick="logout()" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); margin-top: 15px;">Đăng Xuất</button>
+        </div>
+        
+        <div id="message"></div>
+    </div>
 
-  <script>
-    // Tạo token ngẫu nhiên hợp lệ 24h
-    function generateToken() {
-      const date = new Date();
-      const yyyymmdd = date.getFullYear() + 
-        String(date.getMonth() + 1).padStart(2, '0') + 
-        String(date.getDate()).padStart(2, '0');
-      const random = Math.random().toString(36).substring(2, 7).toUpperCase();
-      return `UGPHONE-TEMP-${yyyymmdd}-${random}`;
-    }
+    <script>
+        let updateInterval;
+        // Sử dụng địa chỉ bot-hosting của bạn
+        const API_BASE = 'http://de3.bot-hosting.net:21531/api';
 
-    const token = generateToken();
-    const tokenBox = document.getElementById('tokenBox');
-    tokenBox.textContent = token;
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
 
-    document.getElementById('copyBtn').onclick = async () => {
-      try {
-        await navigator.clipboard.writeText(token);
-        document.getElementById('copyBtn').textContent = '✅ Đã sao chép';
-      } catch (err) {
-        prompt('Sao chép token:', token);
-      }
-    };
-  </script>
+        function setConnectionStatus(connected) {
+            const statusElement = document.getElementById('connectionStatus');
+            if (connected) {
+                statusElement.innerHTML = '<span class="status-indicator status-online"></span><span>Đang kết nối</span>';
+            } else {
+                statusElement.innerHTML = '<span class="status-indicator status-offline"></span><span>Mất kết nối</span>';
+            }
+        }
+
+        async function login() {
+            const token = document.getElementById('tokenInput').value.trim();
+            const loginBtn = document.getElementById('loginBtn');
+            
+            if (!token) {
+                showMessage('Vui lòng nhập token!', 'error');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Đang kết nối...';
+
+            try {
+                const response = await fetch(`${API_BASE}/verify-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('discordToken', token);
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('infoSection').classList.remove('hidden');
+                    updateInfo(data);
+                    startAutoUpdate();
+                    setConnectionStatus(true);
+                    showMessage('✅ Đăng nhập thành công!', 'success');
+                } else {
+                    showMessage('❌ Token không hợp lệ!', 'error');
+                }
+            } catch (error) {
+                showMessage('🔌 Lỗi kết nối đến server!', 'error');
+                console.error('Login error:', error);
+                setConnectionStatus(false);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Đăng Nhập';
+            }
+        }
+
+        function updateInfo(data) {
+            document.getElementById('robloxName').textContent = data.robloxName || 'N/A';
+            document.getElementById('sizeValue').textContent = data.size || 'N/A';
+            document.getElementById('updateTime').textContent = new Date().toLocaleTimeString('vi-VN');
+        }
+
+        async function fetchInfo() {
+            const token = localStorage.getItem('discordToken');
+            
+            if (!token) {
+                logout();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/verify-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateInfo(data);
+                    setConnectionStatus(true);
+                } else {
+                    showMessage('🔒 Token đã hết hạn!', 'error');
+                    logout();
+                }
+            } catch (error) {
+                console.error('Fetch info error:', error);
+                setConnectionStatus(false);
+            }
+        }
+
+        function startAutoUpdate() {
+            fetchInfo(); // Lấy thông tin ngay lập tức
+            updateInterval = setInterval(fetchInfo, 3000); // Cập nhật mỗi 3 giây
+        }
+
+        function logout() {
+            localStorage.removeItem('discordToken');
+            document.getElementById('loginSection').classList.remove('hidden');
+            document.getElementById('infoSection').classList.add('hidden');
+            document.getElementById('tokenInput').value = '';
+            
+            if (updateInterval) {
+                clearInterval(updateInterval);
+            }
+            
+            showMessage('👋 Đã đăng xuất!', 'success');
+        }
+
+        // Kiểm tra nếu đã đăng nhập
+        window.onload = function() {
+            const savedToken = localStorage.getItem('discordToken');
+            if (savedToken) {
+                document.getElementById('tokenInput').value = savedToken;
+                login();
+            }
+        };
+    </script>
 </body>
 </html>
